@@ -11,14 +11,8 @@ print(str(os.path.join(sys.path[0], 'HiremasterAI.xlsx')))
 
 # Step 1: Data Preprocessing
 # Load Excel file into a DataFrame
-df = pd.read_excel(os.path.join(sys.path[0], 'HiremasterAI.xlsx'), sheet_name='Sheet1', usecols='K:Q')
+df = pd.read_excel(os.path.join(sys.path[0], 'HiremasterAI.xlsx'), sheet_name='Sheet1', usecols='K:S')
 print("read")
-
-
-
-
-# Exclude the first three attributes from the comparison
-#df = df.drop(columns=['Company', 'Link', 'Revenue', 'Headline', 'subheadline','Body copy', 'trust', 'indicators', 'call to action', '\"me too\" factor'])
 
 # Step 2: Feature Engineering
 # For demonstration, let's assume 'headline', 'subheadline', 'body copy' are text fields,
@@ -27,10 +21,11 @@ vectorizers = {}
 tfidf_columns = []
 
 
+
 # Separate columns by type for easier processing
-#string_cols = ['trust', 'indicators', 'call to action', '"me too" factor', 'primary color', 'secondary color']
+string_cols = []
 int_cols = ['Word Count', 'Character Count', 'Bullet Point Count']
-string_cols =  [col for col in df.columns if col not in int_cols]
+int_cols =  [col for col in df.columns if col not in string_cols]
 #['Primary color', 'Secondary color', , 'Location Info' ]:
 
 # Impute missing values
@@ -61,13 +56,15 @@ knn.fit(X)
 # Step 4: Prediction
 # Prepare the new data point
 new_point = {
-    'Primary color': 'white',
-    'Secondary color': 'pink',
-    'Word Count': '500',
-    'Character Count' : '8000',
-    'Bullet Point Count' : '5',
-    'Date Info' : 'yes',
-    'Location Info' : 'yes'
+    'Primary R': 255,
+    'Primary G': 255,
+    'Primary B': 255,
+    'Secondary R': 0,
+    'Secondary G': 0,
+    'Secondary B': 0,
+    'Word Count': 500,
+    'Character Count' : 8000,
+    'Bullet Point Count' : 5,
     # ... other attributes ...
 }
 
