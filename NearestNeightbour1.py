@@ -82,5 +82,12 @@ new_point_array = np.array([new_point[col] for col in df.columns]).reshape(1, -1
 # Run k-NN prediction
 distances, indices = knn.kneighbors(new_point_array)
 
-print(f"Nearest neighbors indices: {indices}")
+print(f"\nNearest neighbors indices: {indices}")
 print(f"Distances to nearest neighbors: {distances}")
+
+for i, index in enumerate(indices[0]):
+    print(f"\nNeighbor {i + 1}, at index {index}, distance: {distances[0][i]}")
+    print(df.iloc[index])
+
+print("\nNew data point:")
+print(new_point)
