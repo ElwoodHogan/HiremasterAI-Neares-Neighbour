@@ -11,8 +11,17 @@ print(str(os.path.join(sys.path[0], 'HiremasterAI.xlsx')))
 
 # Step 1: Data Preprocessing
 # Load Excel file into a DataFrame
-df = pd.read_excel(os.path.join(sys.path[0], 'HiremasterAI.xlsx'), sheet_name='Sheet1', usecols='K:S')
-print("read")
+df_numeric = pd.read_excel(os.path.join(sys.path[0], 'HiremasterAI.xlsx'), sheet_name='Sheet1', usecols='K:S')
+
+# Import new columns and convert 'yes'/'no' to binary
+df_binary = pd.read_excel(os.path.join(sys.path[0], 'HiremasterAI.xlsx'), sheet_name='Sheet1', usecols='T:AB')
+binary_map = {'yes': 1, 'no': 0}
+df_binary = df_binary.applymap(lambda x: binary_map.get(str(x).lower(), x) if isinstance(x, str) else x)
+
+
+# Concatenate the binary DataFrame with the numeric DataFrame
+df = pd.concat([df_numeric, df_binary], axis=1)
+
 
 # Step 2: Feature Engineering
 # For demonstration, let's assume 'headline', 'subheadline', 'body copy' are text fields,
@@ -24,7 +33,6 @@ tfidf_columns = []
 
 # Separate columns by type for easier processing
 string_cols = []
-int_cols = ['Word Count', 'Character Count', 'Bullet Point Count']
 int_cols =  [col for col in df.columns if col not in string_cols]
 #['Primary color', 'Secondary color', , 'Location Info' ]:
 
@@ -32,19 +40,9 @@ int_cols =  [col for col in df.columns if col not in string_cols]
 imputer = SimpleImputer(strategy='mean')
 df[int_cols] = imputer.fit_transform(df[int_cols])
 
-# Label encode string columns and keep track of the encoders
-label_encoders = {}
-placeholder = 'UNKNOWN'
-for col in string_cols:
-    le = LabelEncoder()
-    df[col] = df[col].astype(str)
-    df[col] = df[col].apply(lambda x: x if x != 'nan' else placeholder)
-    le.fit(df[col])
-    label_encoders[col] = le
-
 # Optionally, scale integer columns
-scaler = StandardScaler()
-df[int_cols] = scaler.fit_transform(df[int_cols])
+#scaler = StandardScaler()
+#df[int_cols] = scaler.fit_transform(df[int_cols])
 
 # Convert DataFrame to NumPy array
 X = df.to_numpy()
@@ -65,14 +63,18 @@ new_point = {
     'Word Count': 500,
     'Character Count' : 8000,
     'Bullet Point Count' : 5,
+    'Date Info' : 0,
+    'Location Info' : 1,
+    'Salary Mentioned' : 0,
+    'Job Description' : 1,
+    'Skills Required' : 0,
+    'Qualifications Desired' : 1,
+    'Company Overview' : 0,
+    'Mentions Benefits' : 1,
+    'Has Logo' : 0
     # ... other attributes ...
 }
 
-# Convert unseen categories to placeholder and apply transformations
-for col in string_cols:
-    if new_point[col] not in label_encoders[col].classes_:
-        new_point[col] = placeholder
-    new_point[col] = label_encoders[col].transform([new_point[col]])[0]
 
 # Create a NumPy array from new_point
 new_point_array = np.array([new_point[col] for col in df.columns]).reshape(1, -1)
