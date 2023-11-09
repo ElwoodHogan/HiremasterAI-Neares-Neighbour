@@ -11,14 +11,17 @@ print(str(os.path.join(sys.path[0], 'HiremasterAI.xlsx')))
 
 # Step 1: Data Preprocessing
 # Load Excel file into a DataFrame
-df = pd.read_excel(os.path.join(sys.path[0], 'HiremasterAI.xlsx'), sheet_name='Sheet1', usecols='K:Q')
-print("read")
+df_numeric = pd.read_excel(os.path.join(sys.path[0], 'HiremasterAI.xlsx'), sheet_name='Sheet1', usecols='K:S')
+
+# Import new columns and convert 'yes'/'no' to binary
+df_binary = pd.read_excel(os.path.join(sys.path[0], 'HiremasterAI.xlsx'), sheet_name='Sheet1', usecols='T:AB')
+binary_map = {'yes': 1, 'no': 0}
+df_binary = df_binary.applymap(lambda x: binary_map.get(str(x).lower(), x) if isinstance(x, str) else x)
 
 
+# Concatenate the binary DataFrame with the numeric DataFrame
+df = pd.concat([df_numeric, df_binary], axis=1)
 
-
-# Exclude the first three attributes from the comparison
-#df = df.drop(columns=['Company', 'Link', 'Revenue', 'Headline', 'subheadline','Body copy', 'trust', 'indicators', 'call to action', '\"me too\" factor'])
 
 # Step 2: Feature Engineering
 # For demonstration, let's assume 'headline', 'subheadline', 'body copy' are text fields,
@@ -27,29 +30,19 @@ vectorizers = {}
 tfidf_columns = []
 
 
+
 # Separate columns by type for easier processing
-#string_cols = ['trust', 'indicators', 'call to action', '"me too" factor', 'primary color', 'secondary color']
-int_cols = ['Word Count', 'Character Count', 'Bullet Point Count']
-string_cols =  [col for col in df.columns if col not in int_cols]
+string_cols = []
+int_cols =  [col for col in df.columns if col not in string_cols]
 #['Primary color', 'Secondary color', , 'Location Info' ]:
 
 # Impute missing values
 imputer = SimpleImputer(strategy='mean')
 df[int_cols] = imputer.fit_transform(df[int_cols])
 
-# Label encode string columns and keep track of the encoders
-label_encoders = {}
-placeholder = 'UNKNOWN'
-for col in string_cols:
-    le = LabelEncoder()
-    df[col] = df[col].astype(str)
-    df[col] = df[col].apply(lambda x: x if x != 'nan' else placeholder)
-    le.fit(df[col])
-    label_encoders[col] = le
-
 # Optionally, scale integer columns
-scaler = StandardScaler()
-df[int_cols] = scaler.fit_transform(df[int_cols])
+#scaler = StandardScaler()
+#df[int_cols] = scaler.fit_transform(df[int_cols])
 
 # Convert DataFrame to NumPy array
 X = df.to_numpy()
@@ -61,21 +54,27 @@ knn.fit(X)
 # Step 4: Prediction
 # Prepare the new data point
 new_point = {
-    'Primary color': 'white',
-    'Secondary color': 'pink',
-    'Word Count': '500',
-    'Character Count' : '8000',
-    'Bullet Point Count' : '5',
-    'Date Info' : 'yes',
-    'Location Info' : 'yes'
+    'Primary R': 255,
+    'Primary G': 255,
+    'Primary B': 255,
+    'Secondary R': 0,
+    'Secondary G': 0,
+    'Secondary B': 0,
+    'Word Count': 500,
+    'Character Count' : 8000,
+    'Bullet Point Count' : 5,
+    'Date Info' : 0,
+    'Location Info' : 1,
+    'Salary Mentioned' : 0,
+    'Job Description' : 1,
+    'Skills Required' : 0,
+    'Qualifications Desired' : 1,
+    'Company Overview' : 0,
+    'Mentions Benefits' : 1,
+    'Has Logo' : 0
     # ... other attributes ...
 }
 
-# Convert unseen categories to placeholder and apply transformations
-for col in string_cols:
-    if new_point[col] not in label_encoders[col].classes_:
-        new_point[col] = placeholder
-    new_point[col] = label_encoders[col].transform([new_point[col]])[0]
 
 # Create a NumPy array from new_point
 new_point_array = np.array([new_point[col] for col in df.columns]).reshape(1, -1)
@@ -83,5 +82,12 @@ new_point_array = np.array([new_point[col] for col in df.columns]).reshape(1, -1
 # Run k-NN prediction
 distances, indices = knn.kneighbors(new_point_array)
 
-print(f"Nearest neighbors indices: {indices}")
+print(f"\nNearest neighbors indices: {indices}")
 print(f"Distances to nearest neighbors: {distances}")
+
+for i, index in enumerate(indices[0]):
+    print(f"\nNeighbor {i + 1}, at index {index}, distance: {distances[0][i]}")
+    print(df.iloc[index])
+
+print("\nNew data point:")
+print(new_point)
