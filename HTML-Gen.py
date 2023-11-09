@@ -17,15 +17,22 @@ def create_page():
               This is where the job description should go.
               We want you to come join our team of engineers.
               Creating software that will change lives.
-                  
-              We belive in work. Hard work.
-              ''')
-        kbd('Name: ', input_())
-        kbd('Email address', input_())
-        button('Apply')
+              ''')    
+            p('We belive in work. Hard work.')
               
+        p(kbd('First Name: ', input_()))
+        p(kbd('Last Name: ', input_()))
+        p(kbd('Phone Number: ', input_()))
+        p(kbd('Email Address: ', input_()))
+        p(kbd('Zipcode: ', input_()))
+        
+        button('Apply')
+      
+    return doc.render()
+      
+html_content = create_page()        
                                  
 with open('LP.html', 'w') as f:
-    create_page() 
+    f.write(html_content) 
 
 
