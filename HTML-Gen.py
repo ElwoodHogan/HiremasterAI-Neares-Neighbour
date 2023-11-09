@@ -20,11 +20,12 @@ def create_page():
                   
               We belive in work. Hard work.
               ''')
-            kbd('Name: ', input_())
-            button('Apply')
+        kbd('Name: ', input_())
+        kbd('Email address', input_())
+        button('Apply')
               
                                  
-    print(doc)    
-create_page()
-    
-    
+with open('LP.html', 'w') as f:
+    create_page() 
+
+
