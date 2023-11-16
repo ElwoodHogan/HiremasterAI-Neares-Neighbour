@@ -5,18 +5,81 @@
   </head>
   <body>
     <div class="container">
-      <h1>War Eagle, LLC</h1>
-      <p>
-              This is where the job description should go.
-              We want you to come join our team of engineers.
-              Creating software that will change lives.
-                  
-              We belive in work. Hard work.
-              </p>
-      <kbd>Name: 
-        <input>
-      </kbd>
-      <button>Apply</button>
+      <div style="display: flex; justify-content: space-between;">
+        <div style="width: 60%">
+          <h1>War Eagle, LLC</h1>
+          <p>
+                      This is where the job description should go.
+                      We want you to come join our team of engineers.
+                      Creating software that will change lives.
+                      </p>
+          <p>This is where the job benifits would go.</p>
+          <p>We believe in work. Hard work.</p>
+        </div>
+        <div style="width: 40%">
+          <table border="1" style="width: 90%">
+            <tbody>
+              <tr>
+                <td>First Name:</td>
+                <td>
+                  <input name="first_name" type="text">
+                </td>
+              </tr>
+              <tr>
+                <td>Last Name:</td>
+                <td>
+                  <input name="last_name" type="text">
+                </td>
+              </tr>
+              <tr>
+                <td>Phone Number:</td>
+                <td>
+                  <input name="phone_number" type="tel">
+                </td>
+              </tr>
+              <tr>
+                <td>Zipcode:</td>
+                <td>
+                  <input name="zipcode" type="text">
+                </td>
+              </tr>
+              <tr>
+                <td>Email Address:</td>
+                <td>
+                  <input name="email_address" type="email">
+                </td>
+              </tr>
+              <tr>
+                <td>Confirm Email Address:</td>
+                <td>
+                  <input name="email_address" type="email">
+                </td>
+              </tr>
+              <tr>
+                <td>Job History:</td>
+                <ul>
+                  <li>
+                    <td>
+                      <input name="company" type="text">
+                    </td>
+                  </li>
+                  <li>
+                    <td>
+                      <input name="job_title" type="text">
+                    </td>
+                  </li>
+                  <li>
+                    <td>
+                      <input name="time_there" type="text">
+                    </td>
+                  </li>
+                </ul>
+              </tr>
+            </tbody>
+          </table>
+          <button>Apply</button>
+        </div>
+      </div>
     </div>
   </body>
 </html>

@@ -5,6 +5,7 @@ import dominate
 from dominate.tags import *
 
 
+
 def create_page():
     # Creates an html document.
     doc = dominate.document(title='War Eagle LLC')
@@ -15,7 +16,7 @@ def create_page():
             # Split layout with flexbox
             with div(style="display: flex; justify-content: space-between;"):
                 # Left side for job description
-                with div(style="width: 60%"):  # Adjust the width as needed
+                with div(style="width: 60%"):
                     h1('War Eagle, LLC')
                     p('''
                       This is where the job description should go.
@@ -26,9 +27,9 @@ def create_page():
                     p('We believe in work. Hard work.')
 
                 # Right side for the table
-                with div(style="width: 40%"):  # Adjust the width as needed
+                with div(style="width: 40%"):
                     # Table for input fields
-                    with table(border=1, style="width: 45%"):
+                    with table(border=1, style="width: 90%"):
                         with tbody():
                             with tr():
                                 td('First Name:')
@@ -53,8 +54,12 @@ def create_page():
                             with tr():
                                 td('Confirm Email Address:')
                                 td(input_(type='email', name='email_address'))    
-
                             
+                            with tr():
+                                td('Job History:')
+                                td(input_(type='text', name='company'))
+                                td(input_(type='text', name='job_title'))
+                                td(input_(type='number', name='time_there'))
 
                     button('Apply')
 
@@ -65,4 +70,5 @@ html_content = create_page()
 
 with open('LP.html', 'w') as f:
     f.write(html_content)
+
 
