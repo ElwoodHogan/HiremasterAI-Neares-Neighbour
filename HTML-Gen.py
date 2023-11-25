@@ -14,64 +14,65 @@ from dominate.tags import *
 def create_page():
     # Creates an html document.
     doc = dominate.document(title='War Eagle LLC', style='background: navy')
-
+    
+    with doc.head:
+        p('War Eagle, LLC', style='color: orange; text-align: center; border: 3px solid orange')
     # Body
     with doc:
-        
-        h1('War Eagle, LLC', style='color: orange; text-align: center; border: 3px solid orange')
     
         # Split layout with flexbox
         with div(style="display: flex; justify-content: space-between;"):
             # Left side for job description
             with div(style="width: 40%"):
                 h2('Job Title: Worker', style='color: white; text-align: center')
-                p('''
-                  This is where the job description should go.
-                  We want you to come join our team of engineers.
-                  Creating software that will change lives.
-                  ''', style='color: orange')
+                p(strong('Anual Salary of $75K', style='color: orange'))
+                description_list = ul(style='color: orange')
+                with description_list:
+                    li('War')
+                    li('Eagle')
+                    li('Fearless')
+                    li('And')
+                    li('True')
+                p(description_list)
                 p('This is where the job benifits would go.', style='color: orange')
-                p('We believe in work. Hard work.', style='color: orange')
+                
 
             # Right side for the table
             with div(style="width: 50%"):
                 # Table for input fields
-                with table(style='width: 100%; background: navy; overflow-x:auto'):
-                    with tbody():
-                        with tr():
-                            td('First Name:', style='color: white')
-                            td(input_(type='text', name='first_name'))
+                with table(style='width: 100%; background: navy').add(tbody()):
+                    with tr():
+                        th('First Name:', style='color: white')
+                        td(input_(style='padding: 4px', type='text', name='first_name'))
 
-                        with tr():
-                            td('Last Name:', style='color: white')
-                            td(input_(style='padding: 4px', type='text', name='last_name'))
+                    with tr():
+                        th('Last Name:', style='color: white')
+                        td(input_(style='padding: 4px', type='text', name='last_name'))
 
-                        with tr():
-                            td('Phone Number:', style='color: white')
-                            td(input_(style='padding: 4px', type='tel', name='phone_number'))
+                    with tr():
+                        th('Phone Number:', style='color: white')
+                        td(input_(style='padding: 4px', type='tel', name='phone_number'))
+                           
+                    with tr():
+                        th('Zipcode:', style='color: white')
+                        td(input_(style='padding: 4px', type='text', name='zipcode'))
+
+                    with tr():
+                        th('Email Address:', style='color: white')
+                        td(input_(style='padding: 4px', type='email', name='email_address'))
                             
-                        with tr():
-                            td('Zipcode:', style='color: white')
-                            td(input_(style='padding: 4px', type='text', name='zipcode'))
-
-                        with tr():
-                            td('Email Address:', style='color: white')
-                            td(input_(style='padding: 4px', type='email', name='email_address'))
-                            
-                        with tr():
-                            td('Confirm Email Address:', style='color: white')
-                            td(input_(style='padding: 4px', type='email', name='email_address'))    
+                    with tr():
+                        th('Confirm Email Address:', style='color: white')
+                        td(input_(style='padding: 4px', type='email', name='email_address'))    
                         
-                        with tr():
-                            td('Please tell us your last 3 jobs.', style='color: white')
-                        with tr():    
-                            td('Job History:', style='color: white')
-                            td(input_(style='padding: 4px', type='text', name='company'))
-                            td(input_(style='padding: 4px', type='text', name='job_title'))
-                            td(input_(style='padding: 4px', type='number', name='time_there'))
+                    with tr():    
+                        th('Please provide the last 5 years of your job history:', style='color: white')
+                        td(input_(style='padding: 4px', type='text', name='company'))
+                        td(input_(style='padding: 4px', type='text', name='job_title'))
+                        td(input_(style='padding: 4px', type='number', name='time_there'))
 
                 button('Apply', style='color: navy')
-
+        footer(sub('We believe in work. Hard work.', style='color: orange'))
     return doc.render()
 
 
