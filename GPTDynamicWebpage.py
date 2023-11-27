@@ -19,7 +19,12 @@ def CreateWebpageFromPoint(new_point):
         "has_location": new_point['Location Info'] == 1,
         "has_salary": new_point['Salary Mentioned'] == 1,
         "has_logo": new_point['Has Logo'] == 1,
-        # ... other attributes as needed ...
+        "has_description": new_point['Job Description'] == 1,
+        "has_skills": new_point['Skills Required'] == 1,
+        "has_qualifications": new_point['Qualifications Desired'] == 1,
+        "has overview": new_point['Company Overview'] == 1,
+        "has_benefits": new_point['Mentions Benefits'] == 1,
+        "has_date": new_point['Date Info'] == 1
     }
 
     # HTML template with Jinja2 placeholders
