@@ -67,4 +67,4 @@ new_point = {
     # ... other attributes ...
 }
 
-#predict_new_data_point(new_point)
+predict_new_data_point(new_point)

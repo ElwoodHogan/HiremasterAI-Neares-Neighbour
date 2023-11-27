@@ -3,6 +3,7 @@ import numpy as np
 import os
 import sys
 import NearestNeightbourModular as NNM
+import GPTDynamicWebpage as GDW
 
 # Function to load and get min-max for each column
 def get_min_max_values():
@@ -43,6 +44,7 @@ def main():
     random_data_point = generate_random_data_point(min_max_values)
     print(random_data_point)
     NNM.predict_new_data_point(random_data_point)
+    GDW.CreateWebpageFromPoint(random_data_point)
 
 if __name__ == "__main__":
     main()
